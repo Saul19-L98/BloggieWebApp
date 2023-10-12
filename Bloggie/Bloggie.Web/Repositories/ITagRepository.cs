@@ -2,11 +2,11 @@
 
 namespace Bloggie.Web.Repositories;
 
-public interface ITagInterface
+public interface ITagRepository
 {
 	Task<IEnumerable<Tag>> GetAllAsync();
-	Task<Tag> GetAsync(Guid id);
-	Task<Tag> AddAsync(Tag tag);
+	Task<Tag?> GetAsync(Guid id);
+	Task AddAsync(Tag tag);
 	Task<Tag?> UpdateAsync(Tag tag);
-	Task DeleteAsync(Guid id);
+	Task<Tag?> DeleteAsync(Guid id);
 }

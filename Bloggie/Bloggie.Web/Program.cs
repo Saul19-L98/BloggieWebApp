@@ -1,4 +1,5 @@
 using Bloggie.Web.Data;
+using Bloggie.Web.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,9 @@ builder.Services.AddControllersWithViews();
 //Inject our DbContext class inside the services of our application using dependency injection.
 
 builder.Services.AddDbContext<BloggieDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BloggieDbConnectionString")));
+
+// Means: Add a injection inside the services. When sombody calls the I tag repository, give them the implementation instead of the interface.
+builder.Services.AddScoped<ITagRepository, TagRepository>();
 
 var app = builder.Build();
 
