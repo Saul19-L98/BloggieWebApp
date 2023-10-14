@@ -14,6 +14,8 @@ builder.Services.AddDbContext<BloggieDbContext>(options => options.UseSqlServer(
 // Means: Add a injection inside the services. When sombody calls the I tag repository, give them the implementation instead of the interface.
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 
+builder.Services.AddScoped<IBlogPostsRepository, BlogPostsRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
