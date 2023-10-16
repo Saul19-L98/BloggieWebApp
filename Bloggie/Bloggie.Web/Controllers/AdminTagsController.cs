@@ -2,7 +2,7 @@
 using Bloggie.Web.Data;
 using Bloggie.Web.Models.Domain;
 using Bloggie.Web.Models.ViewModels;
-using Bloggie.Web.Repositories;
+using Bloggie.Web.Repositories.TagRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
