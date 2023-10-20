@@ -38,13 +38,13 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             @if (Model != null && Model.BlogPosts.Any())
             {
                 foreach (var blogPost in Model.BlogPosts)
                 {
                     <div class="mb-5 bg-light box-shadow p-5">
-                        <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid"/>
+                        <img src="@blogPost.FeaturedImageUrl" alt="@blogPost.Heading" class="mb-2 d-block img-fluid" />
                         <h2 class="mb-4">@blogPost.Heading</h2>
                         <p class="mb-2">
                             Author: @blogPost.Author
@@ -54,7 +54,7 @@
                         <p class="mb-4">
                             @foreach (var tag in blogPost.Tags)
                             {
-                                <span class="badge bg-secondary me-1">@tag.Name</span>    
+                                <span class="badge bg-secondary me-1">@tag.Name</span>
                             }
                         </p>
                         <p class="mb-5">
