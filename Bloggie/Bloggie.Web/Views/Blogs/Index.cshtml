@@ -1,5 +1,7 @@
-﻿@model Bloggie.Web.Models.Domain.BlogPost
-
+﻿@model Bloggie.Web.Models.ViewModels.BlogDetailsViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signManger
+@inject UserManager<IdentityUser> userManger
 @{
 	ViewData["Title"] = Model.PageTitle;
 }
@@ -13,6 +15,26 @@
 				<div class="d-flex justify-content-between mb-3">
 					<span class="text-secondary">@Model.Author</span>
 					<span class="text-secondary">@Model.PublishedDate.ToShortDateString()</span>
+				</div>
+				<div class="d-flex mb-3 bg-green">
+					@if (signManger.IsSignedIn(User))
+					{
+						@if (Model.Liked)
+						{
+							<a style="cursor:pointer;">
+								<i class="bi bi-hand-thumbs-up-fill"></i>
+							</a>
+						}
+						else
+						{
+							<a id="btnLike" style="cursor:pointer;">
+								<i class="bi bi-hand-thumbs-up"></i>
+							</a>
+						}
+					}
+					<p>
+						<span id="totalLikes">@Model.TotalLikes</span> Likes
+					</p>
 				</div>
 				<div class="mb-3 d-flex">
 					<p class="mb-4">
@@ -34,3 +56,45 @@
 		</div>
 	</div>
 </div>
+
+@section Scripts {
+	<script>
+		const btnLikeElement = document.querySelector("#btnLike");
+
+		const totalLikeElement = document.querySelector("#totalLikes");
+
+		async function getTotalLikes() {
+			fetch('/api/blogPostLike/@Model!.Id/totalLikes', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': '*/*'
+				}
+			})
+			.then(data => data.json())
+			.then(result => totalLikeElement.innerHTML = result);
+		}
+
+		async function addLikeForBlog() {
+			fetch('api/BlogPostLike/Add', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': '*/*'
+				},
+				body: JSON.stringify({
+					blogPostId: '@Model!.Id',
+					userId: '@userManger.GetUserId(User)'
+				})
+			})
+				.then(() => {
+					btnLikeElement.innerHTML = '<i class="bi bi-hand-thumbs-up-fill"></i>';
+					btnLikeElement.removeEventListener('click', addLikeForBlog);
+					getTotalLikes();
+				})
+		}
+				
+
+		btnLikeElement.addEventListener("click",addLikeForBlog);
+	</script>
+}

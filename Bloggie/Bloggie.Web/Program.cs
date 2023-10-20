@@ -1,4 +1,5 @@
 using Bloggie.Web.Data;
+using Bloggie.Web.Repositories.BlogPostLikeRepository;
 using Bloggie.Web.Repositories.BlogPostsRepository;
 using Bloggie.Web.Repositories.ImageRepository;
 using Bloggie.Web.Repositories.TagRepository;
@@ -35,6 +36,8 @@ builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<IBlogPostsRepository, BlogPostsRepository>();
 
 builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
+
+builder.Services.AddScoped<IBlogPostLikeRepository, BlogPostLikeRepository>();
 
 
 var app = builder.Build();
