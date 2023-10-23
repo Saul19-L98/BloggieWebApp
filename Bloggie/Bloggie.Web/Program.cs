@@ -4,6 +4,7 @@ using Bloggie.Web.Repositories.BlogPostLikeRepository;
 using Bloggie.Web.Repositories.BlogPostsRepository;
 using Bloggie.Web.Repositories.ImageRepository;
 using Bloggie.Web.Repositories.TagRepository;
+using Bloggie.Web.Repositories.UserRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,6 +43,7 @@ builder.Services.AddScoped<IBlogPostLikeRepository, BlogPostLikeRepository>();
 
 builder.Services.AddScoped<IBlogPostCommentReposirtory, BlogPostCommentReposirtory>();
 
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
