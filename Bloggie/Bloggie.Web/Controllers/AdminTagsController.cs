@@ -29,10 +29,16 @@ public class AdminTagsController : Controller
     [ActionName("Add")]
     public async Task<IActionResult> Add(AddTagRequest addTagRequest)
     {
-        var tag = new Tag { 
-            Name = addTagRequest.Name, 
-            DisplayName = addTagRequest.DisplayName 
-        };
+        ValidateAddTagRequest(addTagRequest);
+        if (ModelState.IsValid == false)
+        {
+            return View();
+        }
+		var tag = new Tag
+		{
+			Name = addTagRequest.Name,
+			DisplayName = addTagRequest.DisplayName
+		};
 		await tagRepository.AddAsync(tag);
 		return RedirectToAction("List");
     }
@@ -99,5 +105,16 @@ public class AdminTagsController : Controller
         }
         // Show an error notification
         return RedirectToAction("Edit", new { id = editTagRequest.Id});
+    }
+
+    private void ValidateAddTagRequest(AddTagRequest request)
+    {
+        if (request.Name != null && request.DisplayName != null)
+        {
+            if (request.Name == request.DisplayName)
+            {
+                ModelState.AddModelError("DisplayName", "Name cannot be the same as DisplayName");
+            }
+        }
     }
 }

@@ -22,22 +22,25 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
     {
-        var identityUser = new IdentityUser
+        if (ModelState.IsValid)
         {
-            UserName = registerViewModel.Usernamme,
-            Email = registerViewModel.Email,
-        };
-        var identityResult = await userManager.CreateAsync(identityUser, registerViewModel.Password);
-        if (identityResult.Succeeded)
-        {
-            //asign this user the "User" role
-            var roleIdentityResult = await userManager.AddToRoleAsync(identityUser,"User");
-            if (roleIdentityResult.Succeeded)
-            {
-                //Show success notification
-                return RedirectToAction("Register");
-            }
-        }
+			var identityUser = new IdentityUser
+			{
+				UserName = registerViewModel.Usernamme,
+				Email = registerViewModel.Email,
+			};
+			var identityResult = await userManager.CreateAsync(identityUser, registerViewModel.Password);
+			if (identityResult.Succeeded)
+			{
+				//asign this user the "User" role
+				var roleIdentityResult = await userManager.AddToRoleAsync(identityUser, "User");
+				if (roleIdentityResult.Succeeded)
+				{
+					//Show success notification
+					return RedirectToAction("Register");
+				}
+			}
+		}
         //Show error notification
         return View();
     }
@@ -53,17 +56,22 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel loginViewModel)
     {
-        var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.UserName,loginViewModel.Password,false,false);
-        if (signInResult != null && signInResult.Succeeded)
+        if (ModelState.IsValid)
         {
-            if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
-            {
-                return Redirect(loginViewModel.ReturnUrl);
-            }
-            return RedirectToAction("Index","Home");
+			//Show errors
+			return View();
         }
-        //Show errors
-        return View();
+		var signInResult = await signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, false, false);
+		if (signInResult != null && signInResult.Succeeded)
+		{
+			if (!string.IsNullOrWhiteSpace(loginViewModel.ReturnUrl))
+			{
+				return Redirect(loginViewModel.ReturnUrl);
+			}
+			return RedirectToAction("Index", "Home");
+		}
+		//Show errors
+		return View();
     }
     [HttpGet]
     public async Task<IActionResult> LogOut()
